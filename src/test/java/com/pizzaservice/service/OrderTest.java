@@ -8,73 +8,96 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static com.pizzaservice.pizza.PizzaType.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderTest {
-    private Order order;
-    private Order.Builder builder;
-    private static final Pizza MARGHERITA = new Margherita.Builder().build();
-    private static final Pizza FUNGHI = new Funghi.Builder().build();
-
-    @BeforeEach
-    void BeforeEach() {
-        builder = new Order.Builder(new PizzaFactory());
-    }
+    Order order;
 
     @Test
     void shouldAddItems(){
-        builder.addItem("margherita");
-        builder.addItem("funghi");
-        builder.paymentMethod("card");
-        order = builder.build();
+        //given & when
+        order = new Order.Builder()
+                .addItem("margherita")
+                .addItem("funghi")
+                .paymentMethod("card")
+                .build();
 
+        //then
         assertThat(order.getOrderedItems(), Matchers.containsInAnyOrder(MARGHERITA, FUNGHI));
     }
 
     @Test
     void shouldAddPaymentMethod(){
-        builder.addItem("margherita");
-        builder.addItem("funghi");
-        builder.paymentMethod("cash");
-        order = builder.build();
+        //given & when
+        order = new Order.Builder()
+                .addItem("calzone")
+                .paymentMethod("cash")
+                .build();
 
-        assertEquals(PaymentMethod.cash, order.getPaymentMethod());
+        //then
+        assertEquals(PaymentMethod.CASH, order.getPaymentMethod());
     }
 
     @Test
-    void shouldThrowErrorIfInvalidPaymentTypeSelected(){
-        assertThrows(IllegalArgumentException.class,
-                () -> builder.paymentMethod("some invalid payment"));
+    void shouldThrowExceptionIfInvalidPaymentTypeSelected(){
+        //when & then
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> new Order.Builder().paymentMethod("some invalid payment").build());
+
+        //then
+        String expected = "Payment option of type some invalid payment is not available." +
+                " Please select other payment type.";
+        assertEquals(expected, exception.getMessage());
     }
 
     @Test
     void shouldAddCommentIfInput(){
-        builder.comment("comment input");
-        order = builder.build();
+        //given
+        Order order;
+
+        //when
+        order = new Order.Builder()
+                .addItem("calzone")
+                .paymentMethod("cash")
+                .comment("comment input")
+                .build();
 
         assertEquals("comment input", order.getComment());
     }
 
     @Test
     void shouldPrintOrderNumberIfSet(){
-        builder.addItem("funghi");
-        builder.paymentMethod("cash");
-        order = builder.build();
+        //given
+        Order order;
+        order = new Order.Builder()
+                .addItem("calzone")
+                .paymentMethod("cash")
+                .build();
+
+        //when
         order.setOrderNumber(12);
         String expectedString = "Order #12:";
 
+        //then
         assertTrue(order.toString().startsWith(expectedString));
     }
 
     @Test
     void shouldPrintSummedUpOrderedItems(){
-        builder.addItem("funghi");
-        builder.addItem("calzone");
-        builder.addItem("funghi");
-        builder.paymentMethod("cash");
-        order = builder.build();
+        //given
+        Order order;
+        order = new Order.Builder()
+                .addItem("funghi")
+                .addItem("calzone")
+                .addItem("funghi")
+                .paymentMethod("cash")
+                .build();
         order.setOrderNumber(12);
+
+        //when
+        String orderToString = order.toString();
         StringBuilder sb = new StringBuilder();
         sb.append("Order #12:\n");
         sb.append("1 Calzone\n");
@@ -82,38 +105,64 @@ class OrderTest {
         sb.append("Payment method: cash\n");
         String expected = sb.toString();
 
-        assertEquals(expected, order.toString());
+        //then
+        assertEquals(expected, orderToString);
     }
 
     @Test
     void shouldPrintCommentIfInput(){
-        builder.addItem("funghi");
-        builder.paymentMethod("cash");
-        builder.comment("Some comment");
-        order = builder.build();
-        order.setOrderNumber(12);
+        //given
+        Order order;
+        order = new Order.Builder()
+                .addItem("funghi")
+                .paymentMethod("cash")
+                .comment("Some comment")
+                .build();
+
+        //when
+        String orderToString = order.toString();
         String expectedEnding = "Comment: Some comment";
 
-        assertTrue(order.toString().endsWith(expectedEnding));
+        //then
+        assertTrue(orderToString.endsWith(expectedEnding));
     }
 
     @Test
     void shouldNotPrintCommentIfEmpty(){
-        builder.addItem("funghi");
-        builder.paymentMethod("cash");
-        order = builder.build();
-        order.setOrderNumber(12);
+        //given
+        Order order;
+        order = new Order.Builder()
+                .addItem("calzone")
+                .paymentMethod("cash")
+                .build();
+
+        //when
+        String orderToString = order.toString();
         String expectedEnding = "Payment method: cash\n";
 
-        assertTrue(order.toString().endsWith(expectedEnding));
+        assertTrue(orderToString.endsWith(expectedEnding));
     }
 
     @Test
-    @Disabled
     void shouldThrowExceptionWhenEmptyOrderIsBuild(){
+        //when & then
+        Exception exception = assertThrows(IllegalStateException.class,
+                () -> new Order.Builder().paymentMethod("cash").build());
+
+        //then
+        String expected = "There are no items on the order." +
+                " Please select items to order and try again.";
+        assertEquals(expected, exception.getMessage());
     }
 
     @Test
-    @Disabled
-    void shouldThrowExceptionWhenNoPaymentMethodIsSet(){}
+    void shouldThrowExceptionWhenNoPaymentMethodIsSet(){
+        //when & then
+        Exception exception = assertThrows(IllegalStateException.class,
+                () -> new Order.Builder().addItem("calzone").build());
+
+        //then
+        String expected = "No payment method was set.";
+        assertEquals(expected, exception.getMessage());
+    }
 }

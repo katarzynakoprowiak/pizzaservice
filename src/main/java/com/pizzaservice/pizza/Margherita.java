@@ -1,49 +1,17 @@
 package com.pizzaservice.pizza;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class Margherita implements Pizza {
-    public static class Builder {
-        private Ingredient crust;
-        private Ingredient sauce;
-        private List<Ingredient> toppings;
-
-        public Builder(){
-        }
-
-        public Pizza build(){
-            crust();
-            sauce();
-            toppings();
-            return new Margherita(this);
-        }
-
-        private Builder crust(){
-            this.crust = new Ingredient("crust");
-            return this;
-        }
-
-        private Builder sauce(){
-            this.sauce = new Ingredient("tomato sauce");
-            return this;
-        }
-
-        private Builder toppings(){
-            toppings = new ArrayList<>();
-            toppings.add(new Ingredient("cheese"));
-            return this;
-        }
-    }
-
-    private final String name;
+    private final PizzaType pizzaType;
     private final Ingredient crust;
     private final Ingredient sauce;
     private final List<Ingredient> toppings;
 
     private Margherita(Builder builder){
-        name = "Margherita";
+        pizzaType = PizzaType.MARGHERITA;
         this.crust = builder.crust;
         this.sauce = builder.sauce;
         this.toppings = builder.toppings;
@@ -53,7 +21,7 @@ public class Margherita implements Pizza {
     public String toString(){
         StringBuilder builder = new StringBuilder();
 
-        builder.append(name);
+        builder.append(pizzaType);
         builder.append(" - ");
 
         builder.append(crust);
@@ -69,8 +37,8 @@ public class Margherita implements Pizza {
     }
 
     @Override
-    public String getName() {
-        return name;
+    public PizzaType getPizzaType() {
+        return pizzaType;
     }
 
     @Override
@@ -93,7 +61,7 @@ public class Margherita implements Pizza {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Margherita that = (Margherita) o;
-        return Objects.equals(name, that.name) &&
+        return Objects.equals(pizzaType, that.pizzaType) &&
                 Objects.equals(crust, that.crust) &&
                 Objects.equals(sauce, that.sauce) &&
                 Objects.equals(toppings, that.toppings);
@@ -101,6 +69,37 @@ public class Margherita implements Pizza {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, crust, sauce, toppings);
+        return Objects.hash(pizzaType, crust, sauce, toppings);
+    }
+
+    public static class Builder {
+        private Ingredient crust;
+        private Ingredient sauce;
+        private List<Ingredient> toppings;
+
+        public Builder(){
+        }
+
+        public Margherita build(){
+            withCrust();
+            withSauce();
+            withToppings();
+            return new Margherita(this);
+        }
+
+        private Builder withCrust(){
+            this.crust = Ingredient.CRUST;
+            return this;
+        }
+
+        private Builder withSauce(){
+            this.sauce = Ingredient.TOMATO_SAUCE;
+            return this;
+        }
+
+        private Builder withToppings(){
+            toppings = Arrays.asList(Ingredient.CHEESE);
+            return this;
+        }
     }
 }
