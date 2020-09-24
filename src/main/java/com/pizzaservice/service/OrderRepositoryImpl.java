@@ -2,6 +2,7 @@ package com.pizzaservice.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrderRepositoryImpl implements OrderRepository{
     //TODO: should it be in caps?
@@ -22,8 +23,13 @@ public class OrderRepositoryImpl implements OrderRepository{
 
     @Override
     public Order getOrder(int orderNumber) {
-        //TODO: stream perhaps?
-        return null;
+        Order order = getOrders()
+                .stream()
+                .filter(o -> o.getOrderNumber() == orderNumber)
+                .collect(Collectors.toList())
+                .get(0);
+
+        return order;
     }
 
     @Override

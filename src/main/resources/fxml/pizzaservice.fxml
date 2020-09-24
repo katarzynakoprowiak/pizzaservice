@@ -49,7 +49,12 @@
 
         <Label text="Orders" GridPane.columnIndex="1" GridPane.rowIndex="0" />
         <ListView fx:id="ordersListView" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <Button onAction="#listAction" text="List orders" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <children>
+                <Button onAction="#listAction" text="List orders" />
+                <Button onAction="#prepareAction" text="Prepare order"/>
+            </children>
+        </HBox>
     </children>
    <columnConstraints>
       <ColumnConstraints />

@@ -1,10 +1,10 @@
 package com.pizzaservice.pizza;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import static com.pizzaservice.pizza.Ingredient.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CapriciosaTest {
@@ -43,7 +43,20 @@ class CapriciosaTest {
 
         //then
         assertThat(capriciosa.getToppings(),
-                Matchers.containsInAnyOrder(CHEESE, HAM, MUSHROOMS, ARTICHOKES));
+                containsInAnyOrder(CHEESE, HAM, MUSHROOMS, ARTICHOKES));
+    }
+
+    @Test
+    void shouldCorrectlyPrintItself(){
+        //given
+        Capriciosa capriciosa = new Capriciosa.Builder().build();
+
+        //when
+        String capriciosaToString = capriciosa.toString();
+
+        //then
+        String expected = "Capriciosa - crust, tomato sauce, cheese, ham, mushrooms, artichokes";
+        assertEquals(expected, capriciosaToString);
     }
 
 }

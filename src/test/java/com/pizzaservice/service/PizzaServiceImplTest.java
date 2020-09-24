@@ -1,17 +1,14 @@
 package com.pizzaservice.service;
 
-
-import com.pizzaservice.pizza.Capriciosa;
-import com.pizzaservice.pizza.Funghi;
-import com.pizzaservice.pizza.Margherita;
-import com.pizzaservice.pizza.Pizza;
-import org.hamcrest.Matchers;
+import com.pizzaservice.pizza.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PizzaServiceImplTest {
 
@@ -30,14 +27,13 @@ public class PizzaServiceImplTest {
 
         //then
         assertThat(pizzas,
-                Matchers.containsInAnyOrder(
+                containsInAnyOrder(
                         new Margherita.Builder().build(),
                         new Funghi.Builder().build(),
                         new Capriciosa.Builder().build()));
     }
 
     @Test
-    @Disabled
     void shouldReturnAsManyPizzasOfGivenTypeAsOrdered(){
         //given
         PizzaServiceImpl pizzaService = new PizzaServiceImpl(new PizzaFactoryImpl());
@@ -50,7 +46,7 @@ public class PizzaServiceImplTest {
         List<Pizza> pizzas = pizzaService.makePizza(order);
 
         //then
-
+        assertThat(pizzas,
+                contains(new Calzone.Builder().build(), new Calzone.Builder().build()));
     }
-
 }

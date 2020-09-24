@@ -1,12 +1,12 @@
 package com.pizzaservice.service;
 
 import com.pizzaservice.pizza.*;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import static com.pizzaservice.pizza.Ingredient.*;
 import static com.pizzaservice.pizza.PizzaType.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -25,7 +25,7 @@ public class PizzaFactoryImplTest {
         assertEquals(CRUST, margherita.getCrust());
         assertEquals(TOMATO_SAUCE, margherita.getSauce());
         assertThat(margherita.getToppings(),
-                Matchers.containsInAnyOrder(CHEESE));
+                containsInAnyOrder(CHEESE));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class PizzaFactoryImplTest {
         assertEquals(CRUST, capriciosa.getCrust());
         assertEquals(TOMATO_SAUCE, capriciosa.getSauce());
         assertThat(capriciosa.getToppings(),
-                Matchers.containsInAnyOrder(CHEESE, HAM, MUSHROOMS, ARTICHOKES));
+                containsInAnyOrder(CHEESE, HAM, MUSHROOMS, ARTICHOKES));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class PizzaFactoryImplTest {
         assertEquals(CRUST, funghi.getCrust());
         assertEquals(TOMATO_SAUCE, funghi.getSauce());
         assertThat(funghi.getToppings(),
-                Matchers.containsInAnyOrder(CHEESE, MUSHROOMS));
+                containsInAnyOrder(CHEESE, MUSHROOMS));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class PizzaFactoryImplTest {
         assertEquals(ROLLED_CRUST, calzone.getCrust());
         assertEquals(TOMATO_SAUCE, calzone.getSauce());
         assertThat(calzone.getToppings(),
-                Matchers.containsInAnyOrder(CHEESE, HAM, BELL_PEPPER, ONION));
+                containsInAnyOrder(CHEESE, HAM, BELL_PEPPER, ONION));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class PizzaFactoryImplTest {
         expectedMenu.append("Margherita - crust, tomato sauce, cheese\n");
         expectedMenu.append("Capriciosa - crust, tomato sauce, cheese, ham, mushrooms, artichokes\n");
         expectedMenu.append("Funghi - crust, tomato sauce, cheese, mushrooms\n");
-        expectedMenu.append("Calzone - rolled crust, tomato sauce, cheese, ham, bell pepper, onion\n");
+        expectedMenu.append("Calzone - rolled crust, tomato sauce, cheese, ham, bell pepper, onion");
 
         assertEquals(expectedMenu.toString(), actualMenu);
     }

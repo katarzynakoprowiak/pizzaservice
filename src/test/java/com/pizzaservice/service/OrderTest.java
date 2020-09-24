@@ -1,15 +1,10 @@
 package com.pizzaservice.service;
 
-import com.pizzaservice.pizza.Funghi;
-import com.pizzaservice.pizza.Margherita;
-import com.pizzaservice.pizza.Pizza;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.pizzaservice.pizza.PizzaType.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderTest {
@@ -25,7 +20,7 @@ class OrderTest {
                 .build();
 
         //then
-        assertThat(order.getOrderedItems(), Matchers.containsInAnyOrder(MARGHERITA, FUNGHI));
+        assertThat(order.getOrderedItems(), containsInAnyOrder(MARGHERITA, FUNGHI));
     }
 
     @Test

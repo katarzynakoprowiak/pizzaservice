@@ -1,16 +1,17 @@
 package com.pizzaservice.service;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderRepositoryImplTest {
-    OrderRepositoryImpl repository = OrderRepositoryImpl.getInstance();
+    private static final OrderRepositoryImpl REPOSITORY = OrderRepositoryImpl.getInstance();
 
     @Test
     void shouldTakeOrder(){
@@ -21,13 +22,14 @@ class OrderRepositoryImplTest {
                 .build();
 
         //when
-        repository.addOrder(order);
+        REPOSITORY.addOrder(order);
 
         //then
-        assertThat(repository.getOrders(), Matchers.hasItem(order));
+        assertThat(REPOSITORY.getOrders(), hasItem(order));
     }
 
     @Test
+    @Disabled
     void shouldAssignANumberToOrderTaken(){
         //TODO: not sure how to test that
         //given
@@ -35,7 +37,7 @@ class OrderRepositoryImplTest {
                 .addItem("calzone")
                 .paymentMethod("cash")
                 .build();
-        repository.addOrder(order);
+        REPOSITORY.addOrder(order);
 
         //when
         int orderNumber = order.getOrderNumber();
@@ -55,30 +57,28 @@ class OrderRepositoryImplTest {
                 .addItem("calzone")
                 .paymentMethod("cash")
                 .build();
-        repository.addOrder(order);
-        repository.addOrder(anotherOrder);
+        REPOSITORY.addOrder(order);
+        REPOSITORY.addOrder(anotherOrder);
 
         //when
-        List<Order> orders = repository.getOrders();
+        List<Order> orders = REPOSITORY.getOrders();
 
         //then
-        assertThat(orders, Matchers.hasItems(order, anotherOrder));
+        assertThat(orders, hasItems(order, anotherOrder));
     }
 
     @Test
-    @Disabled
     void shouldReturnOrderByOrderNumber(){
-        //TODO
         //given
         Order order = new Order.Builder()
                 .addItem("calzone")
                 .paymentMethod("cash")
                 .build();
-        repository.addOrder(order);
+        REPOSITORY.addOrder(order);
         int orderNumber = order.getOrderNumber();
 
         //when
-        Order actualOrder = repository.getOrder(orderNumber);
+        Order actualOrder = REPOSITORY.getOrder(orderNumber);
 
         //then
         assertEquals(order, actualOrder);

@@ -1,35 +1,35 @@
 package com.pizzaservice.service;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderServiceImplTest {
-    OrderServiceImpl orderService;
+    private static final OrderServiceImpl ORDER_SERVICE
+            = new OrderServiceImpl(OrderRepositoryImpl.getInstance());
 
     @Test
     void shouldTakeOrder(){
         //given
-        orderService = new OrderServiceImpl(OrderRepositoryImpl.getInstance());
         Order order = new Order.Builder()
                 .addItem("calzone")
                 .paymentMethod("cash")
                 .build();
 
         //when
-        orderService.takeOrder(order);
+        ORDER_SERVICE.takeOrder(order);
 
         //then
-        assertThat(orderService.getOrders(), Matchers.hasItem(order));
+        assertThat(ORDER_SERVICE.getOrders(), hasItem(order));
     }
 
     @Test
     void shouldReturnOrdersFromRepository(){
         //given
-        orderService = new OrderServiceImpl(OrderRepositoryImpl.getInstance());
         Order order = new Order.Builder()
                 .addItem("funghi")
                 .paymentMethod("cash")
@@ -40,28 +40,25 @@ class OrderServiceImplTest {
                 .build();
 
         //when
-        orderService.takeOrder(order);
-        orderService.takeOrder(anotherOrder);
+        ORDER_SERVICE.takeOrder(order);
+        ORDER_SERVICE.takeOrder(anotherOrder);
 
         //then
-        assertThat(orderService.getOrders(), Matchers.hasItems(order, anotherOrder));
+        assertThat(ORDER_SERVICE.getOrders(), hasItems(order, anotherOrder));
     }
 
     @Test
-    @Disabled
     void shouldReturnOrderBasedOnOrderNumber(){
-        //TODO
         //given
-        orderService = new OrderServiceImpl(OrderRepositoryImpl.getInstance());
         Order order = new Order.Builder()
                 .addItem("calzone")
                 .paymentMethod("cash")
                 .build();
-        orderService.takeOrder(order);
+        ORDER_SERVICE.takeOrder(order);
         int orderNumber = order.getOrderNumber();
 
         //when
-        Order actualOrder = orderService.getOrderByNumber(orderNumber);
+        Order actualOrder = ORDER_SERVICE.getOrderByNumber(orderNumber);
 
         //then
         assertEquals(order, actualOrder);

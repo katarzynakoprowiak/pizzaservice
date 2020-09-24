@@ -4,9 +4,13 @@ import com.pizzaservice.pizza.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PizzaFactoryImpl implements PizzaFactory{
-    private List<PizzaType> menu = Arrays.asList(PizzaType.values());
+    private List<Pizza> menu = Stream.of(PizzaType.values())
+            .map(p -> makePizza(p))
+            .collect(Collectors.toList());
 
     public PizzaFactoryImpl(){}
 
@@ -33,15 +37,11 @@ public class PizzaFactoryImpl implements PizzaFactory{
                 String.format("Pizza of type %s is unavailable.", pizzaType));
     }
 
-    //TODO: lambda or stream
     public String printMenu(){
-        StringBuilder builder = new StringBuilder();
+        List<String> stringMenu = menu.stream()
+                .map(Pizza::toString)
+                .collect(Collectors.toList());
 
-        for (PizzaType pizza: menu){
-            builder.append(pizza);
-            builder.append("\n");
-        }
-
-        return builder.toString();
+        return String.join("\n", stringMenu);
     }
 }

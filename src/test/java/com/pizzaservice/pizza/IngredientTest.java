@@ -4,13 +4,21 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 class IngredientTest {
     @Test
     void shouldPrintIngredientInLowerCaseWithNoUnderscore(){
-        //TODO: perhaps there is a hamcrest matcher for that
+        //given & when
+        List<String> actual = Stream.of(Ingredient.values())
+                .map(i -> i.toString())
+                .collect(Collectors.toList());
+
+        //then
         List<String> expected = Arrays.asList(
                 "crust",
                 "rolled crust",
@@ -21,7 +29,6 @@ class IngredientTest {
                 "artichokes",
                 "bell pepper",
                 "onion");
-        assertEquals("crust", Ingredient.CRUST.toString());
+        assertThat(actual, equalTo(expected));
     }
-
 }

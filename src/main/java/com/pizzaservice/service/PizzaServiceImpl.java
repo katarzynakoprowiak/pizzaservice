@@ -27,6 +27,7 @@ public class PizzaServiceImpl implements PizzaService{
     }
 
     //TODO: should it be here?
+    // Perhaps it should be a list of PizzaTypes to be dynamically loaded as menu
     public String printMenu(){
         return factory.printMenu();
     }

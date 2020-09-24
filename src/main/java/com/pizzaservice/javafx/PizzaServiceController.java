@@ -1,9 +1,9 @@
 package com.pizzaservice.javafx;
 
+import com.pizzaservice.pizza.Pizza;
 import com.pizzaservice.service.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -14,7 +14,6 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -52,35 +51,35 @@ public class PizzaServiceController implements Initializable {
         resetCommentBox();
     }
 
-    public void addMargherita(ActionEvent event){
+    public void addMargherita(){
         increasePizzaCount(margheritaCount);
     }
 
-    public void subtractMargherita(ActionEvent event){
+    public void subtractMargherita(){
         decreasePizzaCount(margheritaCount);
     }
 
-    public void addCapriciosa(ActionEvent event){
+    public void addCapriciosa(){
         increasePizzaCount(capriciosaCount);
     }
 
-    public void subtractCapriciosa(ActionEvent event){
+    public void subtractCapriciosa(){
         decreasePizzaCount(capriciosaCount);
     }
 
-    public void addFunghi(ActionEvent event){
+    public void addFunghi(){
         increasePizzaCount(funghiCount);
     }
 
-    public void subtractFunghi(ActionEvent event){
+    public void subtractFunghi(){
         decreasePizzaCount(funghiCount);
     }
 
-    public void addCalzone(ActionEvent event){
+    public void addCalzone(){
         increasePizzaCount(calzoneCount);
     }
 
-    public void subtractCalzone(ActionEvent event){
+    public void subtractCalzone(){
         decreasePizzaCount(calzoneCount);
     }
 
@@ -98,7 +97,7 @@ public class PizzaServiceController implements Initializable {
         pizzaCount.setText(String.valueOf(count));
     }
 
-    public void orderAction(ActionEvent event){
+    public void orderAction(){
         List<String> pizzas = getPizzas();
 
         try{
@@ -154,10 +153,10 @@ public class PizzaServiceController implements Initializable {
         comment.clear();
     }
 
-    public void listAction(ActionEvent event){
+    public void listAction(){
         ObservableList<String> orders = FXCollections.observableList(
                 orderService.getOrders().stream()
-                        .map(object -> Objects.toString(object, null))
+                        .map(Order::toString)
                         .collect(Collectors.toList()));
 
         if (orders.isEmpty()){
@@ -169,5 +168,42 @@ public class PizzaServiceController implements Initializable {
             alert.showAndWait();
         }
         ordersListView.setItems(orders);
+    }
+
+    public void prepareAction(){
+        List<String> selectedOrders = ordersListView.getSelectionModel().getSelectedItems();
+
+        if (selectedOrders.size() > 0){
+            List<Integer> orderNumbers = selectedOrders.stream()
+                    .map(on -> on.substring(7, on.indexOf(":")))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+
+            PizzaService service = new PizzaServiceImpl(new PizzaFactoryImpl());
+
+            Order orderToPrepare = orderNumbers.stream()
+                    .map(orderService::getOrderByNumber)
+                    .collect(Collectors.toList()).get(0);
+
+            List<Pizza> preparedPizzas = service.makePizza(orderToPrepare);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Prepared order");
+            alert.setHeaderText(String.format("Order #%d", orderToPrepare.getOrderNumber()));
+            alert.setContentText(String.join("\n",
+                    preparedPizzas.stream()
+                            .map(Pizza::toString)
+                            .collect(Collectors.toList())));
+
+            alert.showAndWait();
+
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(null);
+            alert.setHeaderText(null);
+            alert.setContentText("Please select order to prepare and try again.");
+
+            alert.showAndWait();
+        }
     }
 }

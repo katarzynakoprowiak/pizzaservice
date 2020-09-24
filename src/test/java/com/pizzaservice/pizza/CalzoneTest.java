@@ -1,14 +1,13 @@
 package com.pizzaservice.pizza;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import static com.pizzaservice.pizza.Ingredient.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CalzoneTest {
-
     @Test
     void shouldHaveRolledCrust(){
         //given
@@ -43,12 +42,20 @@ class CalzoneTest {
 
         //then
         assertThat(calzone.getToppings(),
-                Matchers.containsInAnyOrder(CHEESE, HAM, BELL_PEPPER, ONION));
+                containsInAnyOrder(CHEESE, HAM, BELL_PEPPER, ONION));
     }
 
-//    @Test TODO
-//    void shouldCorrectlyPrintItself(){
-//
-//    }
+    @Test
+    void shouldCorrectlyPrintItself(){
+        //given
+        Calzone calzone = new Calzone.Builder().build();
+
+        //when
+        String calzoneToString = calzone.toString();
+
+        //then
+        String expected = "Calzone - rolled crust, tomato sauce, cheese, ham, bell pepper, onion";
+        assertEquals(expected, calzoneToString);
+    }
 
 }

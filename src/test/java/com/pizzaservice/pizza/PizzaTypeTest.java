@@ -1,6 +1,5 @@
 package com.pizzaservice.pizza;
 
-import com.pizzaservice.service.Order;
 import com.pizzaservice.service.PaymentMethod;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -71,7 +70,22 @@ class PizzaTypeTest {
     @Test
     @Disabled
     void shouldPrintPizzaTypeInTitleCase(){
-        //TODO
-    }
+        //given
+        PizzaType margherita = PizzaType.MARGHERITA;
+        PizzaType capriciosa = PizzaType.CAPRICIOSA;
+        PizzaType funghi = PizzaType.FUNGHI;
+        PizzaType calzone = PizzaType.CALZONE;
 
+        //when
+        String margheritaToString = margherita.toString();
+        String capriciosaToString = capriciosa.toString();
+        String funghiToString = funghi.toString();
+        String calzoneToString = calzone.toString();
+
+        //then
+        assertEquals("Margherita", margheritaToString);
+        assertEquals("Capriciosa", capriciosaToString);
+        assertEquals("Funghi", funghiToString);
+        assertEquals("Calzone", calzoneToString);
+    }
 }

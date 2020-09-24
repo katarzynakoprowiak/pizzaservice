@@ -1,10 +1,10 @@
 package com.pizzaservice.pizza;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import static com.pizzaservice.pizza.Ingredient.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MargheritaTest {
@@ -42,6 +42,19 @@ class MargheritaTest {
 
         //then
         assertThat(margherita.getToppings(),
-                Matchers.contains(CHEESE));
+                contains(CHEESE));
+    }
+
+    @Test
+    void shouldCorrectlyPrintItself(){
+        //given
+        Margherita margherita = new Margherita.Builder().build();
+
+        //when
+        String margheritaToString = margherita.toString();
+
+        //then
+        String expected = "Margherita - crust, tomato sauce, cheese";
+        assertEquals(expected, margheritaToString);
     }
 }
