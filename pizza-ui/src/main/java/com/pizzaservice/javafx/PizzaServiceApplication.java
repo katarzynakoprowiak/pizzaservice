@@ -5,13 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
 public class PizzaServiceApplication extends Application {
-    private static final Logger log = LogManager.getLogger(PizzaServiceApplication.class.getName());
+    private static final Logger LOG = LogManager.getLogger(PizzaServiceApplication.class.getName());
 
     @Override
     public void start(Stage stage){
@@ -21,9 +21,10 @@ public class PizzaServiceApplication extends Application {
 
             Parent root = loader.load();
             stage.setScene(new Scene(root));
-            stage.show();}
+            stage.show();
+            LOG.warn("ENTERING THE APP");}
         catch (IOException ioe){
-            log.error("Exception loading app", ioe);
+            LOG.error("Exception loading app", ioe);
         }
 
     }

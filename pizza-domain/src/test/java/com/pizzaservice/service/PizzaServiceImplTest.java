@@ -1,6 +1,7 @@
 package com.pizzaservice.service;
 
 import com.pizzaservice.pizza.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -10,22 +11,32 @@ import static com.pizzaservice.service.PaymentMethod.CASH;
 import static com.pizzaservice.service.PaymentMethod.CREDIT_CARD;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class PizzaServiceImplTest {
+    PizzaServiceImpl pizzaService;
+    PizzaFactory mockFactory;
+
+    @BeforeEach
+    void setup(){
+        mockFactory = mock(PizzaFactory.class);
+        pizzaService = new PizzaServiceImpl(mockFactory);
+    }
 
     @Test
     void shouldReturnPizzaListBasedOnGivenOrder(){
         //given
-        PizzaServiceImpl pizzaService = new PizzaServiceImpl(new PizzaFactoryImpl());
-        Order order = new Order();
-        order.addItems(Arrays.asList(
-                "margherita",
-                "funghi",
-                "capriciosa"));
-        order.setPaymentMethod(CREDIT_CARD);
+        when(mockFactory.makePizza(PizzaType.MARGHERITA)).thenReturn(new Margherita.Builder().build());
+        when(mockFactory.makePizza(PizzaType.FUNGHI)).thenReturn(new Funghi.Builder().build());
+        when(mockFactory.makePizza(PizzaType.CAPRICIOSA)).thenReturn(new Capriciosa.Builder().build());
+
+        Order mockOrder = mock(Order.class);
+        when(mockOrder.getOrderedItems()).thenReturn(Arrays.asList(PizzaType.MARGHERITA,
+                PizzaType.FUNGHI, PizzaType.CAPRICIOSA));
 
         //when
-        List<Pizza> pizzas = pizzaService.makePizza(order);
+        List<Pizza> pizzas = pizzaService.makePizza(mockOrder);
 
         //then
         assertThat(pizzas,
@@ -38,15 +49,14 @@ public class PizzaServiceImplTest {
     @Test
     void shouldReturnAsManyPizzasOfGivenTypeAsOrdered(){
         //given
-        PizzaServiceImpl pizzaService = new PizzaServiceImpl(new PizzaFactoryImpl());
-        Order order = new Order();
-        order.addItems(Arrays.asList(
-                "calzone",
-                "calzone"));
-        order.setPaymentMethod(CASH);
+        when(mockFactory.makePizza(PizzaType.CALZONE)).thenReturn(new Calzone.Builder().build());
+
+        Order mockOrder = mock(Order.class);
+        when(mockOrder.getOrderedItems()).thenReturn(Arrays.asList(PizzaType.CALZONE,
+                PizzaType.CALZONE));
 
         //when
-        List<Pizza> pizzas = pizzaService.makePizza(order);
+        List<Pizza> pizzas = pizzaService.makePizza(mockOrder);
 
         //then
         assertThat(pizzas,

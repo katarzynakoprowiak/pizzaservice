@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" strict="true" name="XMLConfigTest"
+               packages="com.pizzaservice.javafx">
+    <Properties>
+        <Property name="filename">log.out</Property>
+    </Properties>
+    <Filter type="ThresholdFilter" level="trace"/>
+
+    <Appenders>
+        <Appender type="Console" name="Console">
+            <Layout type="PatternLayout">
+                <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+            </Layout>
+        </Appender>
+        <Appender type="File" name="File" fileName="${filename}">
+            <Layout type="PatternLayout">
+                <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+            </Layout>
+        </Appender>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.pizzaservice.javafx.PizzaServiceApplication" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+        <Logger name="com.pizzaservice.javafx.PizzaServiceController" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+        <Root level="debug">
+            <AppenderRef ref="File"/>
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

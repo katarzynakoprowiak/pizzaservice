@@ -8,29 +8,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.util.converter.IntegerStringConverter;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
-import static com.pizzaservice.util.PizzaUtil.DEFAULT_COUNT;
+import static com.pizzaservice.utils.PizzaUtils.DEFAULT_COUNT;
 import static java.util.stream.Collectors.toList;
 
 public class PizzaServiceController implements Initializable {
-    private static final Logger log = LogManager
-            .getLogger(PizzaServiceController.class.getName());
-    ValidatorFactory factory;
-    Validator validator;
-
+    ApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfig.class);
     OrderService orderService;
+    PizzaService pizzaService;
 
     @FXML
     TextField comment;
@@ -46,7 +37,8 @@ public class PizzaServiceController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        orderService = new OrderServiceImpl(OrderSingleton.getInstance());
+        orderService = appContext.getBean("orderService", OrderService.class);
+        pizzaService = appContext.getBean("pizzaService", PizzaService.class);
 
         paymentTypeCombo.getItems().setAll(PaymentMethod.values());
 
@@ -66,8 +58,7 @@ public class PizzaServiceController implements Initializable {
         order.setPaymentMethod(paymentTypeCombo.getValue());
         order.setComment(comment.getText());
 
-        if (validateOrder(order))
-            orderService.takeOrder(order);
+        orderService.takeOrder(order);
 
         resetInputFields();
     }
@@ -91,9 +82,7 @@ public class PizzaServiceController implements Initializable {
         Order selectedOrder = ordersListView.getSelectionModel().getSelectedItem();
 
         if (selectedOrder != null){
-            PizzaService service = new PizzaServiceImpl(new PizzaFactoryImpl());
-
-            List<Pizza> preparedPizzas = service.makePizza(selectedOrder);
+            List<Pizza> preparedPizzas = pizzaService.makePizza(selectedOrder);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Prepared order");
@@ -145,31 +134,6 @@ public class PizzaServiceController implements Initializable {
 
     public void subtractCalzone(){
         decreasePizzaCount(calzoneCount);
-    }
-
-    private boolean validateOrder(Order order) {
-        factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-        Set<ConstraintViolation<Order>> violations = validator.validate(order);
-
-        if (violations.isEmpty())
-            return true;
-
-        for (ConstraintViolation<Order> violation : violations) {
-            log.warn(violation.getMessage());
-        }
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(null);
-        alert.setHeaderText(null);
-        alert.setContentText(String.join("\n",
-                violations.stream()
-                        .map(ConstraintViolation::getMessage)
-                        .collect(toList())));
-
-        alert.showAndWait();
-
-        return false;
     }
 
     private List<String> getPizzas() {

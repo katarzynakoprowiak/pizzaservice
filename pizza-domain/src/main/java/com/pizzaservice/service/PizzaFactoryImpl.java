@@ -1,6 +1,7 @@
 package com.pizzaservice.service;
 
 import com.pizzaservice.pizza.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,6 +9,7 @@ import java.util.stream.Stream;
 
 import static com.pizzaservice.pizza.PizzaType.*;
 
+@Component("pizzaFactory")
 public class PizzaFactoryImpl implements PizzaFactory{
     private List<Pizza> menu = Stream.of(PizzaType.values())
             .map(p -> makePizza(p))

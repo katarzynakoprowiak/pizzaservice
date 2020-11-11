@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
@@ -73,6 +74,22 @@ public class Order {
 
     public String getComment() {
         return comment;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return orderNumber == order.orderNumber &&
+                Objects.equals(orderedItems, order.orderedItems) &&
+                paymentMethod == order.paymentMethod &&
+                Objects.equals(comment, order.comment);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderNumber, orderedItems, paymentMethod, comment);
     }
 
     public void addItem(String pizzaType){

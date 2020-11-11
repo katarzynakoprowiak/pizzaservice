@@ -2,14 +2,16 @@ package com.pizzaservice.service;
 
 import org.junit.jupiter.api.Test;
 
+import static com.pizzaservice.service.PaymentMethod.CASH;
+import static com.pizzaservice.service.PaymentMethod.CREDIT_CARD;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PaymentMethodTest {
     @Test
     void shouldPrintPaymentMethodInLowerCaseWithNoUnderScore(){
         //given
-        PaymentMethod cash = PaymentMethod.CASH;
-        PaymentMethod card = PaymentMethod.CREDIT_CARD;
+        PaymentMethod cash = CASH;
+        PaymentMethod card = CREDIT_CARD;
 
         //when
         String cashToString = cash.toString();

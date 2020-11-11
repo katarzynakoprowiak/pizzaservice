@@ -1,0 +1,24 @@
+CREATE TABLE `pizzaservicedb`.`payment_methods` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `type` VARCHAR(12) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `type_UNIQUE` (`type` ASC) VISIBLE);
+
+CREATE TABLE `pizzaservicedb`.`pizzas` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `pizza_type` VARCHAR(12) NOT NULL,
+  `crust` VARCHAR(12) NOT NULL,
+  `sauce` VARCHAR(20) NULL,
+  `toppings` VARCHAR(255) NULL,
+  PRIMARY KEY (`id`));
+
+CREATE TABLE `pizzaservicedb`.`order_pizzas` (
+  `order_id` INT NOT NULL,
+  `pizza_id` INT NOT NULL,
+  `amount` INT NOT NULL);
+
+CREATE TABLE `pizzaservicedb`.`orders` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `payment_method_id` INT NULL,
+  `comment` MEDIUMTEXT NULL,
+  PRIMARY KEY (`id`));

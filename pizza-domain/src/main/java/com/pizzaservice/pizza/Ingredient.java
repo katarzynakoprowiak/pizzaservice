@@ -2,7 +2,7 @@ package com.pizzaservice.pizza;
 
 import java.util.Objects;
 
-import static com.pizzaservice.util.PizzaUtil.numberToMultiplicationDescription;
+import static com.pizzaservice.utils.PizzaUtils.numberToMultiplicationDescription;
 
 public class Ingredient {
     private final IngredientType type;
