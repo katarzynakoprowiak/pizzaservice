@@ -1,24 +1,44 @@
-CREATE TABLE `pizzaservicedb`.`payment_methods` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `type` VARCHAR(12) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `type_UNIQUE` (`type` ASC) VISIBLE);
-
-CREATE TABLE `pizzaservicedb`.`pizzas` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `pizza_type` VARCHAR(12) NOT NULL,
-  `crust` VARCHAR(12) NOT NULL,
-  `sauce` VARCHAR(20) NULL,
-  `toppings` VARCHAR(255) NULL,
-  PRIMARY KEY (`id`));
-
-CREATE TABLE `pizzaservicedb`.`order_pizzas` (
-  `order_id` INT NOT NULL,
-  `pizza_id` INT NOT NULL,
-  `amount` INT NOT NULL);
-
-CREATE TABLE `pizzaservicedb`.`orders` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE `pizzaservicedb`.`order` (
+  `order_id` INT NOT NULL AUTO_INCREMENT,
   `payment_method_id` INT NULL,
   `comment` MEDIUMTEXT NULL,
-  PRIMARY KEY (`id`));
+  PRIMARY KEY (`order_id`));
+
+CREATE TABLE `pizzaservicedb`.`payment_method` (
+  `payment_method_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(12) NOT NULL,
+  PRIMARY KEY (`payment_method_id`);
+
+CREATE TABLE `pizzaservicedb`.`pizza` (
+  `pizza_id` INT NOT NULL AUTO_INCREMENT,
+  `pizza_type_id` INT NOT NULL,
+  `crust_id` INT NOT NULL,
+  `sauce_id` INT NULL,
+  PRIMARY KEY (`pizza_id`));
+
+CREATE TABLE `pizzaservicedb`.`toppings` (
+  `pizza_id` INT NOT NULL,
+  `ingredient_id` INT NOT NULL,
+  `amount` INT NOT NULL);
+
+CREATE TABLE `pizzaservicedb`.`pizza_type` (
+  `pizza_type_id` INT NOT NULL AUTO_INCREMENT,
+  `type` VARCHAR(12) NOT NULL,
+  PRIMARY KEY (`pizza_type_id`));
+
+CREATE TABLE `pizzaservicedb`.`order_pizza_type` (
+  `order_id` INT NOT NULL,
+  `pizza_type_id` INT NOT NULL,
+  `amount` INT NOT NULL);
+
+CREATE TABLE `pizzaservicedb`.`ingredient_type` (
+  `ingredient_type_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(20) NOT NULL,
+  `weight` INT NOT NULL,
+  PRIMARY KEY (`ingredient_type_id`));
+
+CREATE TABLE `pizzaservicedb`.`ingredient` (
+  `ingredient_id` INT NOT NULL AUTO_INCREMENT,
+  `ingredient_type_id` INT NOT NULL,
+  `amount` INT NOT NULL,
+  PRIMARY KEY (`ingredient_id`));
