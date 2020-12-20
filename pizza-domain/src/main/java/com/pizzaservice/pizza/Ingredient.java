@@ -40,4 +40,8 @@ public class Ingredient {
     public int hashCode() {
         return Objects.hash(type, numberOfPortions);
     }
+
+    public int getNumberOfPortions() {
+        return numberOfPortions;
+    }
 }

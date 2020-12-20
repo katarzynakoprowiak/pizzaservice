@@ -1,44 +1,65 @@
 package com.pizzaservice.javafx;
 
+import com.pizzaservice.model.Order;
+import com.pizzaservice.model.PaymentMethod;
+import com.pizzaservice.model.User;
+import com.pizzaservice.pizza.Capriciosa;
+import com.pizzaservice.pizza.Funghi;
+import com.pizzaservice.pizza.Margherita;
 import com.pizzaservice.pizza.Pizza;
+import com.pizzaservice.pricecalculator.PizzaPriceCalculator;
 import com.pizzaservice.service.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import javax.validation.ConstraintViolation;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
 import static com.pizzaservice.utils.PizzaUtils.DEFAULT_COUNT;
+import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toList;
 
 public class PizzaServiceController implements Initializable {
-    ApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfig.class);
-    OrderService orderService;
-    PizzaService pizzaService;
+    private ApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfig.class);
+
+    private OrderService orderService;
+    private PizzaService pizzaService;
+    private PizzaPriceCalculator calculator;
+    private User user;
 
     @FXML
-    TextField comment;
+    private Label userDetail;
 
     @FXML
-    TextField margheritaCount, capriciosaCount, funghiCount, calzoneCount;
+    private Label margheritaPrice, capriciosaPrice, funghiPrice, calzonePrice;
 
     @FXML
-    ComboBox<PaymentMethod> paymentTypeCombo;
+    private TextField comment;
 
     @FXML
-    ListView<Order> ordersListView;
+    private TextField margheritaCount, capriciosaCount, funghiCount, calzoneCount;
+
+    @FXML
+    private ComboBox<PaymentMethod> paymentTypeCombo;
+
+    @FXML
+    private ListView<Order> ordersListView;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         orderService = appContext.getBean("orderService", OrderService.class);
         pizzaService = appContext.getBean("pizzaService", PizzaService.class);
+        calculator = appContext.getBean("pizzaPriceCalculator", PizzaPriceCalculator.class);
 
         paymentTypeCombo.getItems().setAll(PaymentMethod.values());
 
@@ -57,10 +78,17 @@ public class PizzaServiceController implements Initializable {
         order.addItems(pizzas);
         order.setPaymentMethod(paymentTypeCombo.getValue());
         order.setComment(comment.getText());
+        order.setUser(user);
 
         orderService.takeOrder(order);
 
         resetInputFields();
+    }
+
+    public void switchUserAction() throws IOException {
+        Stage primaryStage = (Stage) userDetail.getScene().getWindow();
+        Parent newRoot = FXMLLoader.load(getClass().getResource("/fxml/selectuser.fxml"));
+        primaryStage.getScene().setRoot(newRoot);
     }
 
     public void listAction(){
@@ -86,7 +114,7 @@ public class PizzaServiceController implements Initializable {
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Prepared order");
-            alert.setHeaderText(String.format("Order #%d", selectedOrder.getOrderNumber()));
+            alert.setHeaderText(String.format("Order #%d", selectedOrder.getId()));
             alert.setContentText(String.join("\n",
                     preparedPizzas.stream()
                             .map(Pizza::toString)
@@ -136,6 +164,12 @@ public class PizzaServiceController implements Initializable {
         decreasePizzaCount(calzoneCount);
     }
 
+    public void setUser(User user) {
+        this.user = user;
+        userDetail.setText(getUserDetailText());
+        setPizzaPrices();
+    }
+
     private List<String> getPizzas() {
         List<String> pizzas = new ArrayList<>();
         getPizzasFromTextField(pizzas, margheritaCount, "margherita");
@@ -149,6 +183,21 @@ public class PizzaServiceController implements Initializable {
         for (int i = 0; i < Integer.parseInt(field.getCharacters().toString()); i++) {
             pizzas.add(pizzaName);
         }
+    }
+
+    private String getUserDetailText() {
+        if (isNull(user)){
+            return "No user selected";
+        }
+        return String.format("Logged as %s", user);
+    }
+
+    private void setPizzaPrices() {
+        //TODO can't be left like this, should not create pizza instances like this
+        margheritaPrice.setText(String.format("%.2f", calculator.calculatePrice(new Margherita.Builder().build(), user.getPriceModifier())));
+        capriciosaPrice.setText(String.format("%.2f", calculator.calculatePrice(new Capriciosa.Builder().build(), user.getPriceModifier())));
+        funghiPrice.setText(String.format("%.2f", calculator.calculatePrice(new Funghi.Builder().build(), user.getPriceModifier())));
+        calzonePrice.setText(String.format("%.2f", calculator.calculatePrice(new Capriciosa.Builder().build(), user.getPriceModifier())));
     }
 
     private void resetInputFields() {

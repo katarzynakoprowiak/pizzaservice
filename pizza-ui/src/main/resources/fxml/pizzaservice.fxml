@@ -8,29 +8,39 @@
 <GridPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pizzaservice.javafx.PizzaServiceController">
 
     <children>
-        <Label text="Menu:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <children>
+                <Label fx:id="userDetail"/>
+                <Button onAction="#switchUserAction" text="Switch user"/>
+            </children>
+        </HBox>
 
-        <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <Label text="Menu:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+
+        <VBox GridPane.columnIndex="0" GridPane.rowIndex="2">
             <children>
                 <GridPane>
                     <Label text="Margherita" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                    <Button onAction="#addMargherita" text="+" GridPane.rowIndex="0"  GridPane.columnIndex="1"/>
-                    <TextField fx:id="margheritaCount" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
-                    <Button onAction="#subtractMargherita" text="-" GridPane.rowIndex="0"  GridPane.columnIndex="3"/>
+                    <Label fx:id="margheritaPrice" text="00.00" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    <Button onAction="#addMargherita" text="+" GridPane.rowIndex="0"  GridPane.columnIndex="2"/>
+                    <TextField fx:id="margheritaCount" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+                    <Button onAction="#subtractMargherita" text="-" GridPane.rowIndex="0"  GridPane.columnIndex="4"/>
                     <Label text="Capriciosa" GridPane.rowIndex="1"  GridPane.columnIndex="0"/>
-                    <Button onAction="#addCapriciosa" text="+" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-                    <TextField fx:id="capriciosaCount" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
-                    <Button onAction="#subtractCapriciosa" text="-" GridPane.rowIndex="1"  GridPane.columnIndex="3"/>
+                    <Label fx:id="capriciosaPrice" text="00.00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    <Button onAction="#addCapriciosa" text="+" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                    <TextField fx:id="capriciosaCount" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+                    <Button onAction="#subtractCapriciosa" text="-" GridPane.rowIndex="1"  GridPane.columnIndex="4"/>
                     <Label text="Funghi" GridPane.rowIndex="2"  GridPane.columnIndex="0"/>
-                    <Button onAction="#addFunghi" text="+" GridPane.rowIndex="2"  GridPane.columnIndex="1"/>
-                    <TextField fx:id="funghiCount" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
-                    <Button onAction="#subtractFunghi" text="-" GridPane.rowIndex="2"  GridPane.columnIndex="3"/>
+                    <Label fx:id="funghiPrice" text="00.00" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                    <Button onAction="#addFunghi" text="+" GridPane.rowIndex="2"  GridPane.columnIndex="2"/>
+                    <TextField fx:id="funghiCount" GridPane.rowIndex="2" GridPane.columnIndex="3"/>
+                    <Button onAction="#subtractFunghi" text="-" GridPane.rowIndex="2"  GridPane.columnIndex="4"/>
                     <Label text="Calzone" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                    <Button onAction="#addCalzone" text="+"  GridPane.rowIndex="3"  GridPane.columnIndex="1"/>
-                    <TextField fx:id="calzoneCount" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
-                    <Button onAction="#subtractCalzone" text="-" GridPane.rowIndex="3"  GridPane.columnIndex="3"/>
+                    <Label fx:id="calzonePrice" text="00.00" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                    <Button onAction="#addCalzone" text="+"  GridPane.rowIndex="3"  GridPane.columnIndex="2"/>
+                    <TextField fx:id="calzoneCount" GridPane.rowIndex="3" GridPane.columnIndex="3"/>
+                    <Button onAction="#subtractCalzone" text="-" GridPane.rowIndex="3"  GridPane.columnIndex="4"/>
                 </GridPane>
-<!--                <ListView fx:id="pizzaListView"/>-->
                 <HBox>
                     <children>
                         <Label text="Payment type" />
@@ -46,11 +56,11 @@
             </children>
         </VBox>
 
-        <Button onAction="#orderAction" text="Order" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Button onAction="#orderAction" text="Order" GridPane.columnIndex="0" GridPane.rowIndex="3" />
 
-        <Label text="Orders" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <ListView fx:id="ordersListView" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <Label text="Orders" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <ListView fx:id="ordersListView" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
             <children>
                 <Button onAction="#listAction" text="List orders" />
                 <Button onAction="#prepareAction" text="Prepare order"/>
@@ -58,13 +68,14 @@
         </HBox>
     </children>
    <columnConstraints>
-      <ColumnConstraints />
-      <ColumnConstraints />
+       <ColumnConstraints />
+       <ColumnConstraints />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
+       <RowConstraints />
+       <RowConstraints />
+       <RowConstraints />
+       <RowConstraints />
    </rowConstraints>
 
 </GridPane>

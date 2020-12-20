@@ -1,5 +1,6 @@
 package com.pizzaservice.service;
 
+import com.pizzaservice.model.PizzaType;
 import com.pizzaservice.pizza.*;
 import org.springframework.stereotype.Component;
 
@@ -7,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.pizzaservice.pizza.PizzaType.*;
+import static com.pizzaservice.model.PizzaType.*;
 
 @Component("pizzaFactory")
 public class PizzaFactoryImpl implements PizzaFactory{

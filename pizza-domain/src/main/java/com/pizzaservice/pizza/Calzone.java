@@ -1,5 +1,7 @@
 package com.pizzaservice.pizza;
 
+import com.pizzaservice.model.PizzaType;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;

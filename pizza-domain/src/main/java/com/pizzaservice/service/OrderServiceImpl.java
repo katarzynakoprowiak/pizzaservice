@@ -1,6 +1,7 @@
 package com.pizzaservice.service;
 
-
+import com.pizzaservice.model.Order;
+import com.pizzaservice.repository.OrderRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,12 +35,9 @@ public class OrderServiceImpl implements OrderService{
         Set<ConstraintViolation<Order>> violations = getOrderViolations(order);
 
         if (violations.isEmpty()){
-            try{
-                order.setOrderNumber(orderRepository.addOrder(order));
-            } catch (SQLException exception){
-                LOG.warn("Error writing order to the repository.", exception);
-            }
-            LOG.info("Added order #{}", order.getOrderNumber());
+            orderRepository.add(order);
+
+            LOG.info("Added order #{}", order.getId());
         } else {
             LOG.warn(violations.stream().map(ConstraintViolation::getMessage)
                     .collect(Collectors.joining("\n")));
@@ -48,13 +45,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     public List<Order> getOrders(){
-        List<Order> orders = null;
-        try{
-            orders = orderRepository.getOrders();
-        } catch (SQLException exception) {
-            LOG.warn("Error accessing repository order data.", exception);
-        }
-        return orders;
+        return orderRepository.getAll();
     }
 
     public Set<ConstraintViolation<Order>> getOrderViolations(Order order) {

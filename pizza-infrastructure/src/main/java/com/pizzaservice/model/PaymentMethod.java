@@ -1,4 +1,4 @@
-package com.pizzaservice.service;
+package com.pizzaservice.model;
 
 public enum PaymentMethod {
     CASH,

@@ -3,8 +3,8 @@ package com.pizzaservice.service;
 import com.pizzaservice.pizza.*;
 import org.junit.jupiter.api.Test;
 
+import static com.pizzaservice.model.PizzaType.*;
 import static com.pizzaservice.pizza.IngredientType.*;
-import static com.pizzaservice.pizza.PizzaType.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;

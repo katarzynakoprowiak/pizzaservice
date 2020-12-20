@@ -1,5 +1,6 @@
 package com.pizzaservice.service;
 
+import com.pizzaservice.model.Order;
 import com.pizzaservice.pizza.Pizza;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +25,7 @@ public class PizzaServiceImpl implements PizzaService{
 
     @Override
     public List<Pizza> makePizza(Order order) {
-        LOG.info("Prepared order #{}", order.getOrderNumber());
+        LOG.info("Prepared order #{}", order.getId());
         return order.getOrderedItems().stream()
                 .map(factory::makePizza)
                 .collect(toList());

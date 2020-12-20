@@ -1,4 +1,4 @@
-package com.pizzaservice.pizza;
+package com.pizzaservice.model;
 
 import org.apache.commons.text.WordUtils;
 

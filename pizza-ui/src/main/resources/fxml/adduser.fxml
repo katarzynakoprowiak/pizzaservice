@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pizzaservice.javafx.AddUserController">
+
+    <children>
+        <Label text="First name" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="firstName" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <Label text="Surname" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="surname" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <HBox GridPane.rowIndex="3" GridPane.columnIndex="1">
+            <children>
+                <Button onAction="#addAction" text="Add"/>
+                <Button onAction="#backAction" text="Back"/>
+            </children>
+        </HBox>
+
+    </children>
+    <columnConstraints>
+        <ColumnConstraints />
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+    </rowConstraints>
+
+</GridPane>

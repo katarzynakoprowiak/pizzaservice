@@ -1,11 +1,11 @@
-package com.pizzaservice.pizza;
+package com.pizzaservice.model;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.pizzaservice.pizza.PizzaType.*;
+import static com.pizzaservice.model.PizzaType.*;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -83,7 +83,6 @@ class PizzaTypeTest {
                 .collect(toList());
 
         //then
-        assertThat(pizzaTypesToSting,
-                containsInAnyOrder("Margherita", "Capriciosa", "Funghi", "Calzone"));
+        assertThat(pizzaTypesToSting, containsInAnyOrder("Margherita", "Capriciosa", "Funghi", "Calzone"));
     }
 }

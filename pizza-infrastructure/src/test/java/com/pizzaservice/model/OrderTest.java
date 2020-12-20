@@ -1,18 +1,20 @@
-package com.pizzaservice.service;
+package com.pizzaservice.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static com.pizzaservice.pizza.PizzaType.*;
-import static com.pizzaservice.service.PaymentMethod.CASH;
+import static com.pizzaservice.model.PaymentMethod.CASH;
+import static com.pizzaservice.model.PizzaType.FUNGHI;
+import static com.pizzaservice.model.PizzaType.MARGHERITA;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderTest {
     Order order;
+    private static final User USER = new User("Test", "User", 1.0);
 
     @BeforeEach
     void setup(){
@@ -59,8 +61,8 @@ class OrderTest {
         order.setPaymentMethod(CASH);
 
         //when
-        order.setOrderNumber(12);
-        String expectedString = "Order #12:";
+        order.setId(12L);
+        String expectedString = "Order #12 ";
 
         //then
         assertTrue(order.toString().startsWith(expectedString));
@@ -74,12 +76,13 @@ class OrderTest {
                 "calzone",
                 "funghi"));
         order.setPaymentMethod(CASH);
-        order.setOrderNumber(12);
+        order.setId(12L);
+        order.setUser(USER);
 
         //when
         String orderToString = order.toString();
         StringBuilder sb = new StringBuilder();
-        sb.append("Order #12:\n");
+        sb.append("Order #12 placed by Test User:\n");
         sb.append("1 Calzone\n");
         sb.append("2 Funghis\n");
         sb.append("Payment method: cash\n");

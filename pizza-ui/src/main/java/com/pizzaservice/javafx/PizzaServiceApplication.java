@@ -17,7 +17,7 @@ public class PizzaServiceApplication extends Application {
     public void start(Stage stage){
         try{
             FXMLLoader loader = new FXMLLoader(PizzaServiceController.class
-                    .getResource("/fxml/pizzaservice.fxml"));
+                    .getResource("/fxml/selectuser.fxml"));
 
             Parent root = loader.load();
             stage.setScene(new Scene(root));

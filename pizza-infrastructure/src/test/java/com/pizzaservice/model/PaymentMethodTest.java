@@ -1,9 +1,9 @@
-package com.pizzaservice.service;
+package com.pizzaservice.model;
 
 import org.junit.jupiter.api.Test;
 
-import static com.pizzaservice.service.PaymentMethod.CASH;
-import static com.pizzaservice.service.PaymentMethod.CREDIT_CARD;
+import static com.pizzaservice.model.PaymentMethod.CASH;
+import static com.pizzaservice.model.PaymentMethod.CREDIT_CARD;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PaymentMethodTest {
