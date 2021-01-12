@@ -1,0 +1,21 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet author="Kasia" id="1">
+        <createTable tableName="payment_method">
+            <column autoIncrement="false" name="payment_method_id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(12)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Kasia" id="2">
+        <insert tableName="payment_method">
+            <column name="payment_method_id" value="1" />
+            <column name="name" value="cash" />
+        </insert>
+        <insert tableName="payment_method">
+            <column name="payment_method_id" value="2" />
+            <column name="name" value="credit card" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>
